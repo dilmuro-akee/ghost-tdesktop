@@ -110,9 +110,10 @@ jobs:
 
       - name: Libraries.
         env:
-          GYP_MSVS_OVERRIDE_PATH: 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise\'
           GYP_MSVS_VERSION: 2022
         run: |
+          for /f "usebackq delims=" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath`) do set "GYP_MSVS_OVERRIDE_PATH=%%i"
+          echo Using Visual Studio at: "%GYP_MSVS_OVERRIDE_PATH%"
           %TBUILD%\%REPO_NAME%\Telegram\build\prepare\win.bat silent %QT%
 
       - name: Free up some disk space.
